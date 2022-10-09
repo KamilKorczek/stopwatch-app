@@ -1,7 +1,37 @@
+import Button from './components/Button/Button';
+import {useEffect, useState} from "react";
+import Timer from './components/Timer/Timer';
+import Container from './components/Container/Container';
+import Hero from './components/Hero/Hero'
+
 const App = () => {
-  return (
-    <h1>Stoperwatch-app</h1>
-  );
+
+  const [time, setTime] = useState('');
+  const [start, setStart] = useState(false);
+
+  useEffect(() => {
+    let interval = null;
+
+    if(start) {
+      interval = setInterval(() => {
+        setTime(prevTime => prevTime + 10)
+      }, 10)
+    } else {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval)
+  }, [start]);
+  
+
+  return(
+    <Container>
+      <Hero />
+      <Timer time={time} />
+        <Button action={() => setStart(true)}>START</Button>
+        <Button action={() => setStart(false)}>STOP</Button>
+        <Button action={() => setTime(0)}>RESET</Button>
+    </Container>
+  )
 };
 
 export default App;
